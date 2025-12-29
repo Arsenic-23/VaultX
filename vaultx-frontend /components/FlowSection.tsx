@@ -238,7 +238,9 @@ export default function FlowSection() {
               ].map((item, i) => (
                 <div
                   key={item.title}
-                  ref={(n) => (nodesRef.current[i] = n)}
+                  ref={(n) => {
+                    nodesRef.current[i] = n;
+                  }}
                   className="relative z-10"
                 >
                   <div
