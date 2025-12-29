@@ -34,8 +34,13 @@ export default function DownloadPage() {
 
   useGSAP(() => {
     if (!pageRef.current) return;
+
     const tl = createPageEnterTl(pageRef.current);
-    return () => tl.kill();
+    if (!tl) return;
+
+    return () => {
+      tl.kill();
+    };
   }, []);
 
   useGSAP(() => {
@@ -55,22 +60,40 @@ export default function DownloadPage() {
   }, [file]);
 
   useEffect(() => {
-    const fetchMeta = async () => {
-      const res = await fetch(`${API_BASE}/file/${slug}`);
-      if (!res.ok) {
-        setFile({ name: "", size: 0, status: "removed" });
-        return;
-      }
+    let mounted = true;
 
-      const data = await res.json();
-      setFile({
-        name: data.filename,
-        size: data.size,
-        status: "active",
-      });
+    const fetchMeta = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/file/${slug}`);
+
+        if (!res.ok) {
+          if (mounted) {
+            setFile({ name: "", size: 0, status: "removed" });
+          }
+          return;
+        }
+
+        const data = await res.json();
+
+        if (mounted) {
+          setFile({
+            name: data.filename,
+            size: data.size,
+            status: "active",
+          });
+        }
+      } catch {
+        if (mounted) {
+          setFile({ name: "", size: 0, status: "removed" });
+        }
+      }
     };
 
     fetchMeta();
+
+    return () => {
+      mounted = false;
+    };
   }, [slug]);
 
   const handleDownload = () => {
@@ -104,7 +127,7 @@ export default function DownloadPage() {
     >
       <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
 
-      <div className="relative hidden lg:grid min-h-screen grid-cols-12 gap-6 px-6 py-10">
+      <div className="relative hidden min-h-screen grid-cols-12 gap-6 px-6 py-10 lg:grid">
         <div className="col-span-3 space-y-4">
           <AdSlot label="Ad" className="min-h-[220px]" />
           <AdSlot label="Ad" className="min-h-[180px]" />
@@ -115,10 +138,10 @@ export default function DownloadPage() {
             {file.status === "active" ? (
               <div
                 ref={contentCardRef}
-                className="rounded-3xl border border-white/[0.08] bg-navy-primary/70 p-8 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.45)] space-y-6"
+                className="space-y-6 rounded-3xl border border-white/[0.08] bg-navy-primary/70 p-8 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
               >
                 <div>
-                  <h1 className="text-lg font-semibold text-white truncate">
+                  <h1 className="truncate text-lg font-semibold text-white">
                     {file.name}
                   </h1>
                   <p className="text-xs text-white/55">
