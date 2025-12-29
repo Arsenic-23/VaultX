@@ -50,8 +50,7 @@ export default function HomePage() {
   const ctaRowRef = useRef<HTMLDivElement>(null);
 
   const sectionRefs = useRef<SectionRef[]>([]);
-
-  const modernSectionRef = useRef<HTMLElement>(null);
+  const modernSectionRef = useRef<HTMLDivElement | null>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const rotatingRefs = useRef<HTMLHeadingElement[]>([]);
 
@@ -175,7 +174,7 @@ export default function HomePage() {
         ctaRowRef={ctaRowRef}
       />
 
-      {/* ✅ FIXED REF */}
+      {/* FIXED REF */}
       <MonetizationSection
         ref={(n) => {
           sectionRefs.current[0] = n;
