@@ -8,16 +8,15 @@ type Props = {
 
 export default function GeoMap({ height = 220 }: Props) {
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const [hovered, setHovered] = useState<string>("");
+  const [hovered, setHovered] = useState("");
 
   useEffect(() => {
     let mounted = true;
 
     const run = async () => {
       if (!svgRef.current) return;
-
-      const d3: any = await import("d3");
-      const topojson: any = await import("topojson-client");
+      const d3 = require("d3");
+      const topojson = require("topojson-client");
 
       const width = svgRef.current.clientWidth || 1000;
 
