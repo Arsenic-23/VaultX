@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { feature } from "topojson-client";
 
 type Props = {
   height?: number;
@@ -18,6 +17,7 @@ export default function GeoMap({ height = 220 }: Props) {
       if (!svgRef.current) return;
 
       const d3 = (await import("d3")) as any;
+      const topojson = (await import("topojson-client")) as any;
 
       const width = svgRef.current.clientWidth;
       const svg = d3.select(svgRef.current);
@@ -35,7 +35,7 @@ export default function GeoMap({ height = 220 }: Props) {
 
       if (!mounted) return;
 
-      const countries = feature(
+      const countries = topojson.feature(
         topology,
         topology.objects.countries
       ).features as any[];
