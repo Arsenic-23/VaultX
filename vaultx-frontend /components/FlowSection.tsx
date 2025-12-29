@@ -115,14 +115,15 @@ export default function FlowSection() {
                 scale: 1,
                 duration: 0.4,
                 ease: "power2.out",
-                onComplete: () =>
+                onComplete: () => {
                   gsap.to(dollarRef.current, {
                     opacity: 0,
                     y: -30,
                     scale: 0.8,
                     duration: 0.3,
                     ease: "power2.in",
-                  }),
+                  });
+                },
               }
             );
           };
