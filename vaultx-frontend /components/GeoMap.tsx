@@ -16,10 +16,11 @@ export default function GeoMap({ height = 220 }: Props) {
     const run = async () => {
       if (!svgRef.current) return;
 
-      const d3 = (await import("d3")) as any;
-      const topojson = (await import("topojson-client")) as any;
+      const d3: any = await import("d3");
+      const topojson: any = await import("topojson-client");
 
-      const width = svgRef.current.clientWidth;
+      const width = svgRef.current.clientWidth || 1000;
+
       const svg = d3.select(svgRef.current);
       svg.selectAll("*").remove();
 
@@ -28,7 +29,7 @@ export default function GeoMap({ height = 220 }: Props) {
         .scale(width / 8)
         .translate([width / 2, height / 2 + 10]);
 
-      const path = d3.geoPath(projection);
+      const path = d3.geoPath().projection(projection);
 
       const res = await fetch("/geo/countries-110m.json");
       const topology = await res.json();
@@ -38,7 +39,7 @@ export default function GeoMap({ height = 220 }: Props) {
       const countries = topojson.feature(
         topology,
         topology.objects.countries
-      ).features as any[];
+      ).features;
 
       svg
         .append("g")
@@ -52,7 +53,7 @@ export default function GeoMap({ height = 220 }: Props) {
         .attr("stroke-width", 0.5)
         .style("pointer-events", "auto")
         .on("mouseenter", function (_: any, d: any) {
-          setHovered(d.properties?.name ?? "");
+          setHovered(d?.properties?.name ?? "");
           d3.select(this).attr("fill", "#3b82f6");
         })
         .on("mouseleave", function () {
