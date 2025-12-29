@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -16,7 +16,8 @@ const MonetizationSection = forwardRef<
   HTMLDivElement,
   MonetizationSectionProps
 >(function MonetizationSection(_, ref) {
-  const sectionRef = useRef<HTMLElement>(null);
+  
+  const sectionRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -24,6 +25,9 @@ const MonetizationSection = forwardRef<
   const cursorRef = useRef<HTMLSpanElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const copyRef = useRef<HTMLParagraphElement>(null);
+
+ 
+  useImperativeHandle(ref, () => sectionRef.current as HTMLDivElement);
 
   useGSAP(
     () => {
@@ -49,7 +53,7 @@ const MonetizationSection = forwardRef<
       });
 
       /* ----------------------------
-       * Background video gyro / parallax
+       * Background video parallax
        * ---------------------------- */
       if (videoRef.current) {
         gsap.to(videoRef.current, {
@@ -66,7 +70,7 @@ const MonetizationSection = forwardRef<
       }
 
       /* ----------------------------
-       * Container subtle counter-parallax
+       * Container counter-parallax
        * ---------------------------- */
       gsap.to(containerRef.current, {
         y: -32,
@@ -80,7 +84,7 @@ const MonetizationSection = forwardRef<
       });
 
       /* ----------------------------
-       * Typewriter loop (unchanged logic)
+       * Typewriter loop
        * ---------------------------- */
       const typeTl = gsap.timeline({
         repeat: -1,
@@ -91,35 +95,29 @@ const MonetizationSection = forwardRef<
       let currentText = "";
 
       chars.forEach((char) => {
-        typeTl.to(
-          {},
-          {
-            duration: 0.055,
-            onStart: () => {
-              currentText += char;
-              if (eyebrowRef.current) {
-                eyebrowRef.current.textContent = currentText;
-              }
-            },
-          }
-        );
+        typeTl.to({}, {
+          duration: 0.055,
+          onStart: () => {
+            currentText += char;
+            if (eyebrowRef.current) {
+              eyebrowRef.current.textContent = currentText;
+            }
+          },
+        });
       });
 
       typeTl.to({}, { duration: 1.2 });
 
       chars.forEach(() => {
-        typeTl.to(
-          {},
-          {
-            duration: 0.035,
-            onStart: () => {
-              currentText = currentText.slice(0, -1);
-              if (eyebrowRef.current) {
-                eyebrowRef.current.textContent = currentText;
-              }
-            },
-          }
-        );
+        typeTl.to({}, {
+          duration: 0.035,
+          onStart: () => {
+            currentText = currentText.slice(0, -1);
+            if (eyebrowRef.current) {
+              eyebrowRef.current.textContent = currentText;
+            }
+          },
+        });
       });
 
       /* ----------------------------
@@ -134,7 +132,7 @@ const MonetizationSection = forwardRef<
       });
 
       /* ----------------------------
-       * Text reveal (single-run)
+       * Text reveal
        * ---------------------------- */
       gsap.timeline({
         scrollTrigger: {
@@ -161,7 +159,7 @@ const MonetizationSection = forwardRef<
         );
 
       /* ----------------------------
-       * Micro gyro on headline & copy
+       * Micro gyro
        * ---------------------------- */
       [headlineRef.current, copyRef.current].forEach((el, i) => {
         if (!el) return;
@@ -182,11 +180,7 @@ const MonetizationSection = forwardRef<
 
   return (
     <section
-      ref={(n) => {
-        sectionRef.current = n!;
-        if (typeof ref === "function") ref(n);
-        else if (ref) (ref as any).current = n;
-      }}
+      ref={sectionRef}
       className="relative min-h-[85vh] overflow-hidden border-b border-white/[0.07] flex items-center"
     >
       {/* Background video */}
@@ -209,17 +203,8 @@ const MonetizationSection = forwardRef<
         className="relative mx-auto max-w-4xl px-4 py-32 text-center will-change-transform"
       >
         {/* Eyebrow */}
-        <p
-          className="relative mb-4 inline-flex items-center text-xs font-medium uppercase tracking-[0.24em] text-white/50"
-          style={{
-            fontFamily:
-              "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', system-ui, sans-serif",
-          }}
-        >
-          {/* Invisible layout stabilizer */}
+        <p className="relative mb-4 inline-flex items-center text-xs font-medium uppercase tracking-[0.24em] text-white/50">
           <span className="invisible whitespace-nowrap">{TEXT}</span>
-
-          {/* Animated layer */}
           <span className="absolute left-0 flex items-center whitespace-nowrap">
             <span ref={eyebrowRef} />
             <span
@@ -235,10 +220,6 @@ const MonetizationSection = forwardRef<
           className="text-3xl sm:text-4xl font-[560] leading-tight
                      bg-gradient-to-b from-white via-white/80 to-white/45
                      bg-clip-text text-transparent will-change-transform"
-          style={{
-            fontFamily:
-              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif",
-          }}
         >
           Turn file sharing
           <br />
@@ -249,15 +230,10 @@ const MonetizationSection = forwardRef<
         <p
           ref={copyRef}
           className="mx-auto mt-7 max-w-2xl text-base leading-7 text-white/65 will-change-transform"
-          style={{
-            fontFamily:
-              "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', system-ui, sans-serif",
-          }}
         >
           Vaultx gives you a clean, creator-first way to monetize files. Upload
           once, share a link anywhere, and earn from every view automatically —
-          no intrusive ads, no broken flows, just revenue that feels invisible
-          to your audience.
+          no intrusive ads, no broken flows.
         </p>
       </div>
     </section>
