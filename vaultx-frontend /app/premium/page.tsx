@@ -42,7 +42,7 @@ export default function PremiumPage() {
       timeRange={timeRange}
       onTimeRangeChange={setTimeRange}
       timeRanges={timeRanges}
-      actionLabel="Upgrade"   {/* ✅ REQUIRED FIX */}
+      actionLabel="Upgrade"
     >
       <div ref={rootRef} className="space-y-24 pt-14">
         {/* TOP OVERVIEW */}
@@ -183,7 +183,7 @@ function SourceCard({
   percent,
 }: {
   title: string;
-  icon: any;
+  icon: React.ElementType;
   color: "blue" | "green" | "violet";
   percent: number;
 }) {
