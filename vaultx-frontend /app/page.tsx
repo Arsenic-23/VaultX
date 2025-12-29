@@ -175,7 +175,12 @@ export default function HomePage() {
         ctaRowRef={ctaRowRef}
       />
 
-      <MonetizationSection ref={(n) => (sectionRefs.current[0] = n)} />
+      {/* ✅ FIXED REF */}
+      <MonetizationSection
+        ref={(n) => {
+          sectionRefs.current[0] = n;
+        }}
+      />
 
       <FlowSection />
 
