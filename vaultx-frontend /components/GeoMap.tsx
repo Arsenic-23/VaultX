@@ -15,7 +15,10 @@ export default function GeoMap({ height = 220 }: Props) {
 
     const run = async () => {
       if (!svgRef.current) return;
+
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const d3 = require("d3");
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const topojson = require("topojson-client");
 
       const width = svgRef.current.clientWidth || 1000;
@@ -51,11 +54,14 @@ export default function GeoMap({ height = 220 }: Props) {
         .attr("stroke", "rgba(255,255,255,0.08)")
         .attr("stroke-width", 0.5)
         .style("pointer-events", "auto")
-        .on("mouseenter", function (_: any, d: any) {
-          setHovered(d?.properties?.name ?? "");
-          d3.select(this).attr("fill", "#3b82f6");
-        })
-        .on("mouseleave", function () {
+        .on(
+          "mouseenter",
+          function (this: SVGPathElement, _: any, d: any) {
+            setHovered(d?.properties?.name ?? "");
+            d3.select(this).attr("fill", "#3b82f6");
+          }
+        )
+        .on("mouseleave", function (this: SVGPathElement) {
           setHovered("");
           d3.select(this).attr("fill", "#1f2937");
         });
