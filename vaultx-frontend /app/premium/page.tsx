@@ -33,7 +33,7 @@ const summary = [
 
 export default function PremiumPage() {
   const [timeRange, setTimeRange] = useState("30d");
-  const rootRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <AnalyticsShell
@@ -42,6 +42,7 @@ export default function PremiumPage() {
       timeRange={timeRange}
       onTimeRangeChange={setTimeRange}
       timeRanges={timeRanges}
+      actionLabel="Upgrade"   {/* ✅ REQUIRED FIX */}
     >
       <div ref={rootRef} className="space-y-24 pt-14">
         {/* TOP OVERVIEW */}
@@ -161,13 +162,7 @@ export default function PremiumPage() {
 
 /* SMALL METRIC ROW */
 
-function MetricRow({
-  label,
-  color,
-}: {
-  label: string;
-  color: string;
-}) {
+function MetricRow({ label, color }: { label: string; color: string }) {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">
