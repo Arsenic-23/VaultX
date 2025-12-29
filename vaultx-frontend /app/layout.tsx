@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import NavbarWrapper from "@/components/NavbarWrapper";
+import FooterWrapper from "@/components/FooterWrapper";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,21 +18,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const headersList = headers();
-  const pathname = headersList.get("x-pathname") || "";
-  const isDashboard = pathname.startsWith("/dashboard");
-
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} bg-[#050509] text-white antialiased`}
-      >
+      <body className={`${inter.className} bg-[#050509] text-white antialiased`}>
         <TooltipProvider delayDuration={150}>
-          {!isDashboard && <Navbar />}
-
+          <NavbarWrapper />
           <main className="min-h-screen">{children}</main>
-
-          {!isDashboard && <Footer />}
+          <FooterWrapper />
         </TooltipProvider>
       </body>
     </html>
