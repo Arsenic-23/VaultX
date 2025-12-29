@@ -41,17 +41,17 @@ const ROTATING_HEADLINES = [
 ];
 
 export default function HomePage() {
-  const pageRef = useRef<HTMLDivElement>(null);
+  const pageRef = useRef<HTMLDivElement | null>(null);
 
-  const heroRef = useRef<HTMLDivElement>(null);
-  const eyebrowRef = useRef<HTMLParagraphElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const subheadingRef = useRef<HTMLParagraphElement>(null);
-  const ctaRowRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement | null>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement | null>(null);
+  const headlineRef = useRef<HTMLHeadingElement | null>(null);
+  const subheadingRef = useRef<HTMLParagraphElement | null>(null);
+  const ctaRowRef = useRef<HTMLDivElement | null>(null);
 
   const sectionRefs = useRef<SectionRef[]>([]);
   const modernSectionRef = useRef<HTMLDivElement | null>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement | null>(null);
   const rotatingRefs = useRef<HTMLHeadingElement[]>([]);
 
   /* Hero entrance */
@@ -174,7 +174,7 @@ export default function HomePage() {
         ctaRowRef={ctaRowRef}
       />
 
-      {/* FIXED REF */}
+      {/* Monetization section */}
       <MonetizationSection
         ref={(n) => {
           sectionRefs.current[0] = n;
@@ -185,7 +185,7 @@ export default function HomePage() {
 
       {/* MODERN WAY */}
       <section
-        ref={(n) => {
+        ref={(n: HTMLDivElement | null) => {
           modernSectionRef.current = n;
           sectionRefs.current[1] = n;
         }}
