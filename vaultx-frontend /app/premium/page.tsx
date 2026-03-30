@@ -33,16 +33,16 @@ const summary = [
 
 export default function PremiumPage() {
   const [timeRange, setTimeRange] = useState("30d");
-  const rootRef = useRef<HTMLDivElement | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   return (
     <AnalyticsShell
       title="Overview"
       subtitle="Subscription performance and revenue activity"
+      actionLabel="Download report"
       timeRange={timeRange}
       onTimeRangeChange={setTimeRange}
       timeRanges={timeRanges}
-      actionLabel="Upgrade"
     >
       <div ref={rootRef} className="space-y-24 pt-14">
         {/* TOP OVERVIEW */}
@@ -162,7 +162,13 @@ export default function PremiumPage() {
 
 /* SMALL METRIC ROW */
 
-function MetricRow({ label, color }: { label: string; color: string }) {
+function MetricRow({
+  label,
+  color,
+}: {
+  label: string;
+  color: string;
+}) {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">
@@ -183,7 +189,7 @@ function SourceCard({
   percent,
 }: {
   title: string;
-  icon: React.ElementType;
+  icon: any;
   color: "blue" | "green" | "violet";
   percent: number;
 }) {
