@@ -14,7 +14,7 @@ import MonetizationSection from "@/components/MonetizationSection";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type SectionRef = HTMLDivElement | null;
+type SectionRef = HTMLElement | null;
 
 const modernColumns = [
   {
@@ -41,17 +41,18 @@ const ROTATING_HEADLINES = [
 ];
 
 export default function HomePage() {
-  const pageRef = useRef<HTMLDivElement | null>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
 
-  const heroRef = useRef<HTMLDivElement | null>(null);
-  const eyebrowRef = useRef<HTMLParagraphElement | null>(null);
-  const headlineRef = useRef<HTMLHeadingElement | null>(null);
-  const subheadingRef = useRef<HTMLParagraphElement | null>(null);
-  const ctaRowRef = useRef<HTMLDivElement | null>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const subheadingRef = useRef<HTMLParagraphElement>(null);
+  const ctaRowRef = useRef<HTMLDivElement>(null);
 
   const sectionRefs = useRef<SectionRef[]>([]);
-  const modernSectionRef = useRef<HTMLDivElement | null>(null);
-  const bgRef = useRef<HTMLDivElement | null>(null);
+
+  const modernSectionRef = useRef<HTMLElement | null>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
   const rotatingRefs = useRef<HTMLHeadingElement[]>([]);
 
   /* Hero entrance */
@@ -174,18 +175,13 @@ export default function HomePage() {
         ctaRowRef={ctaRowRef}
       />
 
-      {/* Monetization section */}
-      <MonetizationSection
-        ref={(n) => {
-          sectionRefs.current[0] = n;
-        }}
-      />
+      <MonetizationSection ref={(n) => { sectionRefs.current[0] = n; }} />
 
       <FlowSection />
 
       {/* MODERN WAY */}
       <section
-        ref={(n: HTMLDivElement | null) => {
+        ref={(n) => {
           modernSectionRef.current = n;
           sectionRefs.current[1] = n;
         }}
@@ -213,7 +209,7 @@ export default function HomePage() {
                 <h3
                   key={text}
                   ref={(el) => {
-                    if (el) rotatingRefs.current[i] = el;
+                    if (el) { rotatingRefs.current[i] = el; }
                   }}
                   className="absolute inset-0 flex items-center justify-center text-3xl font-semibold sm:text-4xl"
                 >
