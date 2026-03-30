@@ -57,6 +57,7 @@ export default function ProductStackSection() {
             start: "top bottom",
             end: "bottom top",
             scrub: 1,
+            invalidateOnRefresh: true,
           },
         }
       );
@@ -69,6 +70,8 @@ export default function ProductStackSection() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top 65%",
+          toggleActions: "play none none reverse",
+          invalidateOnRefresh: true,
         },
       });
 
@@ -80,6 +83,8 @@ export default function ProductStackSection() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top 70%",
+          toggleActions: "play none none reverse",
+          invalidateOnRefresh: true,
         },
       });
 
@@ -95,6 +100,7 @@ export default function ProductStackSection() {
             start: "top bottom",
             end: "bottom top",
             scrub: 1,
+            invalidateOnRefresh: true,
           },
         }
       );
@@ -107,6 +113,7 @@ export default function ProductStackSection() {
         scrollTrigger: {
           trigger: statementSectionRef.current,
           start: "top 70%",
+          invalidateOnRefresh: true,
         },
       });
 
@@ -140,6 +147,7 @@ export default function ProductStackSection() {
             start: "top bottom",
             end: "bottom top",
             scrub: 1,
+            invalidateOnRefresh: true,
           },
         }
       );
@@ -152,7 +160,10 @@ export default function ProductStackSection() {
         scrollTrigger: {
           trigger: ctaSectionRef.current,
           start: "top 70%",
+          toggleActions: "play none none reverse",
+          invalidateOnRefresh: true,
         },
+        immediateRender: false,
       });
 
       gsap.from(ctaBtnRef.current, {
@@ -164,7 +175,11 @@ export default function ProductStackSection() {
         scrollTrigger: {
           trigger: ctaSectionRef.current,
           start: "top 70%",
+          toggleActions: "play none none reverse",
+          invalidateOnRefresh: true,
         },
+        immediateRender: false,
+        clearProps: "transform,opacity",
       });
     });
 
@@ -197,9 +212,7 @@ export default function ProductStackSection() {
             {featureGrid.map((feature, idx) => (
               <div
                 key={feature}
-                ref={(el) => {
-                  if (el) cardsRef.current[idx] = el;
-                }}
+                ref={(el) => { if (el) cardsRef.current[idx] = el; }}
                 className="px-6 py-8 text-sm text-white/75"
               >
                 <div className="flex gap-3">
@@ -241,9 +254,7 @@ export default function ProductStackSection() {
             {STATEMENTS.map((text, idx) => (
               <p
                 key={text}
-                ref={(el) => {
-                  if (el) statementRefs.current[idx] = el;
-                }}
+                ref={(el) => { if (el) statementRefs.current[idx] = el; }}
                 className="absolute inset-0 text-balance text-5xl font-semibold bg-gradient-to-br from-white via-white/60 to-white/30 bg-clip-text text-transparent"
               >
                 {text}
